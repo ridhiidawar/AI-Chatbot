@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Helper - Your AI Study Buddy</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Dialogflow Messenger -->
+    <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
+    <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+    
+    <style>
+        /* Custom styles to integrate with Tailwind and define the theme */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #d3e3fd 0%, #f0f4f8 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        /* UPDATED: Animation for a much stronger and wider glow */
+        @keyframes glowing {
+            0% {
+                box-shadow: 0 0 5px rgba(59, 130, 246, 0.7);
+            }
+            50% {
+                /* Increased blur and added a spread radius to make the glow much larger */
+                box-shadow: 0 0 40px 10px rgba(59, 130, 246, 0.8), 0 0 65px 20px rgba(96, 165, 250, 0.6);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(59, 130, 246, 0.7);
+            }
+        }
+
+        /* Styling for the Dialogflow Messenger */
+        df-messenger {
+            z-index: 999;
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            --df-messenger-font-color: #000;
+            --df-messenger-font-family: 'Inter', Google Sans, sans-serif;
+            --df-messenger-chat-background: #C6DAFC;
+            --df-messenger-message-user-background: #d3e3fd;
+            --df-messenger-message-bot-background: #ffffff;
+            --df-messenger-button-titlebar-color: #ffffff;
+            --df-messenger-button-titlebar-font-color: #333;
+            --df-messenger-send-icon-color: #3b82f6; /* Blue-500 */
+        }
+        
+        /* Apply glowing animation to the chat bubble */
+        df-messenger-chat-bubble {
+            animation: glowing 2s infinite ease-in-out;
+            border-radius: 50%; /* Helps contain the glow effect cleanly */
+        }
+
+        /* Animation for the pointing arrows */
+        @keyframes bounce-arrow-diagonal {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(8px, 8px);
+            }
+        }
+        .animate-bounce-arrow {
+            animation: bounce-arrow-diagonal 1.5s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Dialogflow Messenger Component -->
+    <df-messenger
+      language-code="en"
+      max-query-length="-1">
+      <df-messenger-chat-bubble
+        chat-title="Student Helper">
+      </df-messenger-chat-bubble>
+    </df-messenger>
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.375a6.375 6.375 0 006.375-6.375V9.75A6.375 6.375 0 0012 3.375z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.375c-3.518 0-6.375 2.857-6.375 6.375v2.25c0 3.518 2.857 6.375 6.375 6.375zM12 18.375V21m-3.75-2.625V21m7.5-2.625V21" />
+                </svg>
+                <span class="text-2xl font-bold text-gray-800">Student Helper</span>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#features" class="text-gray-600 hover:text-blue-500 transition-colors">Features</a>
+                <a href="#how-it-works" class="text-gray-600 hover:text-blue-500 transition-colors">How It Works</a>
+                <a href="#testimonials" class="text-gray-600 hover:text-blue-500 transition-colors">Testimonials</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-gradient py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
+                    Your Personal AI Study Buddy
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    Stuck on homework? Prepping for an exam? Get instant, friendly, and accurate help from our AI-powered chatbot, available 24/7.
+                </p>
+            </div>
+        </section>
+
+        <!-- Arrow Pointer Section -->
+        <section class="py-16">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Try Our Bot!</h2>
+                <p class="text-gray-600 mb-6">Click the glowing circle in the corner to start.</p>
+                <div class="flex justify-center items-center space-x-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-500 animate-bounce-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 5l14 14m-5 0h5v-5" />
+                    </svg>
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-500 animate-bounce-arrow" style="animation-delay: 0.2s;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 5l14 14m-5 0h5v-5" />
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Everything You Need to Succeed</h2>
+                    <p class="text-gray-600 mt-2">Our chatbot is packed with features to help you excel.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature Card 1 -->
+                    <div class="bg-gray-50 p-8 rounded-xl shadow-sm card-hover">
+                        <div class="bg-blue-100 text-blue-500 rounded-full h-16 w-16 flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v11.494m-9-5.747h18" /></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">Instant Homework Help</h3>
+                        <p class="text-gray-600">From complex math problems to historical dates, get clear, step-by-step answers in seconds.</p>
+                    </div>
+                    <!-- Feature Card 2 -->
+                    <div class="bg-gray-50 p-8 rounded-xl shadow-sm card-hover">
+                        <div class="bg-green-100 text-green-500 rounded-full h-16 w-16 flex items-center justify-center mb-6">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">Personalized Quizzes</h3>
+                        <p class="text-gray-600">Test your knowledge on any subject. The bot creates custom quizzes to help you prepare for exams.</p>
+                    </div>
+                    <!-- Feature Card 3 -->
+                    <div class="bg-gray-50 p-8 rounded-xl shadow-sm card-hover">
+                        <div class="bg-purple-100 text-purple-500 rounded-full h-16 w-16 flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">Concept Explanations</h3>
+                        <p class="text-gray-600">Don't just get the answer. Understand the 'why' with simple explanations of difficult concepts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Get Help in 3 Easy Steps</h2>
+                </div>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
+                    <!-- Step 1 -->
+                    <div class="text-center max-w-xs">
+                        <div class="bg-white shadow-lg text-blue-500 rounded-full h-24 w-24 flex items-center justify-center mx-auto mb-4 text-4xl font-bold">1</div>
+                        <h3 class="text-xl font-semibold mb-2">Open the Chat</h3>
+                        <p class="text-gray-600">Click the glowing chat bubble in the corner to start a conversation.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="text-center max-w-xs">
+                        <div class="bg-white shadow-lg text-blue-500 rounded-full h-24 w-24 flex items-center justify-center mx-auto mb-4 text-4xl font-bold">2</div>
+                        <h3 class="text-xl font-semibold mb-2">Ask Anything</h3>
+                        <p class="text-gray-600">Type your question, from simple queries to complex problems.</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="text-center max-w-xs">
+                        <div class="bg-white shadow-lg text-blue-500 rounded-full h-24 w-24 flex items-center justify-center mx-auto mb-4 text-4xl font-bold">3</div>
+                        <h3 class="text-xl font-semibold mb-2">Learn Instantly</h3>
+                        <p class="text-gray-600">Receive an immediate, helpful response to guide your learning.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Loved by Students</h2>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="bg-gray-50 p-8 rounded-xl">
+                        <p class="text-gray-600 mb-6">"This bot is a lifesaver! It helped me understand a physics concept I've been stuck on for weeks. The explanations are so clear."</p>
+                        <div class="flex items-center">
+                            <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/d3e3fd/333333?text=AS" alt="Avatar of Aditya Sharma">
+                            <div>
+                                <p class="font-bold">Aditya Dadhich</p>
+                                <p class="text-sm text-gray-500">computer science and engineering</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-8 rounded-xl">
+                        <p class="text-gray-600 mb-6">"I use the Student Helper to quiz myself before every history test. It's way more engaging than just re-reading my notes. Highly recommend!"</p>
+                        <div class="flex items-center">
+                            <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/d3e3fd/333333?text=PP" alt="Avatar of Priya Patel">
+                            <div>
+                                <p class="font-bold">Priya Patel</p>
+                                <p class="text-sm text-gray-500">University Student</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-8 rounded-xl">
+                        <p class="text-gray-600 mb-6">"As someone who struggles with math, getting instant help at 2 AM before an assignment is due is incredible. Thank you!"</p>
+                        <div class="flex items-center">
+                            <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/d3e3fd/333333?text=RG" alt="Avatar of Rohan Gupta">
+                            <div>
+                                <p class="font-bold">Rohan Gupta</p>
+                                <p class="text-sm text-gray-500">High School Student</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Student Helper. All Rights Reserved.</p>
+            <div class="mt-4 space-x-6">
+                <a href="#" class="hover:underline">Privacy Policy</a>
+                <a href="#" class="hover:underline">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
